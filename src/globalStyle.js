@@ -1,6 +1,6 @@
 import { createGlobalStyle } from "styled-components"
 
-export const GlobalStyle = createGlobalStyle`
+export const Reset = createGlobalStyle`
 
     /* http://meyerweb.com/eric/tools/css/reset/ 
     v2.0 | 20110126
@@ -50,10 +50,14 @@ export const GlobalStyle = createGlobalStyle`
         border-collapse: collapse;
         border-spacing: 0;
     }
+`;
+
+export const GlobalStyle = createGlobalStyle`
+
     * {
         box-sizing: border-box;
     }
     body {
         background-color: #FB6B6B;
     }
-`;
+`
