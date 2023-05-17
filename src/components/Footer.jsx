@@ -1,10 +1,12 @@
 import { Container } from "./styles/footer"
 
-export default function Footer() {
+export default function Footer(props) {
+
+  const { cardCounter } = props;
 
   return (
     <Container>
-      <h3>0/8 CONCLUÍDOS</h3>
+      <h3>{cardCounter}/8 CONCLUÍDOS</h3>
     </Container>
   );
 }

@@ -34,6 +34,9 @@ export const CardContent = styled.div`
     position: relative;
 
     h2 {
+        color: ${props => props.fontColor};
+        text-decoration:  ${props => props.cardChecked ? "line-through" : "none"};
+
         font-family: 'Recursive', sans-serif;
         font-weight: 400;
         font-size: 16px;
@@ -41,14 +44,16 @@ export const CardContent = styled.div`
 
     button {
         display: ${props => props.status === 2 ? "none" : ""};
+        cursor: ${props => props.cardChecked ? "default" : "pointer"};
+
         border: none;
         background: none;
-        cursor: ${props => props.buttonDisabled ? "default" : "pointer"};
     }
 
     img {
-        position: absolute;
         top: ${props => (props.status > 0 && props.status < 3) ? "105px" : "11px"};
+
+        position: absolute;
         right: 11px;
     }
 `;
@@ -65,7 +70,6 @@ export const ButtonsContainer = styled.div`
 export const Button = styled.div`
 
     display: ${props => props.hidden ? "none" : "flex"};
-
     background-color: ${props => props.hidden ? "inherit" : props.color};
     font-size: ${props => props.font};
     cursor: ${props => props.cursor};
@@ -80,5 +84,5 @@ export const Button = styled.div`
     font-family: 'Recursive', sans-serif;
     font-weight: 400;
     text-align: center;
-    color: #FFFFFF;
+    color: #FFF;
 `;

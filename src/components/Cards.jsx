@@ -1,6 +1,5 @@
 import { Container, Wrapper, CardContent, ButtonsContainer, Button } from "./styles/cards"
 
-import arrowIcon from "/assets/seta_play.png"
 import flipIcon from "/assets/seta_virar.png"
 import answerIcon0 from "/assets/icone_erro.png"
 import answerIcon1 from "/assets/icone_quase.png"
@@ -8,71 +7,64 @@ import answerIcon2 from "/assets/icone_certo.png"
 
 function Card(props) {
 
-  const { card, index, updateCardState } = props;
+  const { card, 
+          style, 
+          counter, 
+          index, 
+          updateCardState, 
+          updateCardStyle, 
+          setCardCounter 
+        } = props;
 
-  function getStyles() {
+  function setCardStyle(status, answerIcon = "", buttonIndex = "") {
 
-    if (card.status === 0) {
+    let newCardStyle = {};
 
-      return {
-        message: `Pergunta ${index + 1}`,
-        background: "#FFFFFF",
-        icon: arrowIcon,
-        hideButtons: true,
-        colors: ["inherit", "inherit", "inherit"],
-        font: 0,
-        cursor: "auto",
-      };
-    }
-
-    else if (card.status === 1) {
-
-      return {
-        message: card.question, 
+    if (status === 1) {
+      newCardStyle = {
         background: "#FFFFD4",
         icon: flipIcon,
         hideButtons: false,
-        colors: ["inherit", "inherit", "inherit"],
-        font: 0,
-        cursor: "auto",
       };
     }
 
-    else if (card.status === 2) {
-
-      return {
-        message: card.answer, 
-        background: "#FFFFD4",
+    else if (status === 2) {
+      newCardStyle = {
         icon: "",
-        hideButtons: false,
         colors: ["#FF3030", "#FF922E", "#2FBE34"],
         font: "12px",
         cursor: "pointer",
       };
     }
 
-    else if (card.status === 3) {
-
-      return {
-        message: `Pergunta ${index + 1}`,
+    else if (status === 3) {
+      newCardStyle = {
+        fontColor: style.colors[buttonIndex],
         background: "#FFFFFF",
-        icon: card.answerIcon,
+        icon: answerIcon,
         hideButtons: true,
         colors: ["inherit", "inherit", "inherit"],
         font: 0,
         cursor: "auto",
       };
     }
+
+    updateCardStyle(newCardStyle, index);
   }
 
-  function setCardStatus(index, icon = "") {
+  function setCardStatus(index, icon = "", buttonIndex = "") {
 
     let newCardState = {};
 
-    if (card.status === 2) newCardState = {status: card.status + 1, checked: true, answerIcon: icon};
-    else newCardState = {status: card.status + 1};
+    if (card.status === 0) newCardState = {status: card.status + 1, message: card.question}
+    else if (card.status === 1) newCardState = {status: card.status + 1, message: card.answer}
+    else if (card.status === 2) {
+      newCardState = {status: card.status + 1, message: card.number, checked: true};
+      setCardCounter(counter + 1)
+    }
     
     updateCardState(newCardState, index);
+    setCardStyle(newCardState.status, icon, buttonIndex);
   }
 
   function setCardIcon(buttonIndex) {
@@ -83,50 +75,43 @@ function Card(props) {
     else if (buttonIndex === 1) icon = answerIcon1;
     else if (buttonIndex === 2) icon = answerIcon2;
 
-    setCardStatus(index, icon);
+    setCardStatus(index, icon, buttonIndex);
   }
 
-  const styles = getStyles();
+  const buttonsText = ["Não lembrei", "Quase não lembrei", "Zap!"];
 
   return (
     <Wrapper
-      background={styles.background} 
+      background={style.background}
       status={card.status}
     >
       <CardContent
-        status={card.status} 
-        buttonDisabled={card.checked}
+        status={card.status}
+        cardChecked={card.checked}
+        fontColor={style.fontColor}
       >
-        <h2>{styles.message}</h2>      
-        <button 
-          disabled={card.checked} 
+        <h2>{card.message}</h2>  
+        <button
+          disabled={card.checked}
           onClick={() => setCardStatus(index)}
         >
-          <img src={styles.icon} alt={styles.icon} />
+          <img src={style.icon} alt={style.icon} />
         </button>
       </CardContent>
-      <ButtonsContainer hidden={styles.hideButtons}>
-        <Button 
-          onClick={() => setCardIcon(0)}
-          hidden={styles.hideButtons}
-          color={styles.colors[0]}
-          font={styles.font}
-          cursor={styles.cursor}
-        >Não lembrei</Button>
-        <Button
-          onClick={() => setCardIcon(1)}
-          hidden={styles.hideButtons}
-          color={styles.colors[1]}
-          font={styles.font}
-          cursor={styles.cursor}
-        >Quase não lembrei</Button>
-        <Button
-          onClick={() => setCardIcon(2)}
-          hidden={styles.hideButtons}
-          color={styles.colors[2]}
-          font={styles.font}
-          cursor={styles.cursor}
-        >Zap!</Button>
+      <ButtonsContainer
+        hidden={style.hideButtons}
+      >
+        {buttonsText.map((text, index) => {
+          return (
+            <Button
+              key={index}
+              onClick={() => setCardIcon(index)}
+              hidden={style.hideButtons}
+              color={style.colors[index]}
+              font={style.font}
+              cursor={style.cursor}
+            >{text}</Button>
+          )})}
       </ButtonsContainer>
     </Wrapper>
   );
@@ -134,7 +119,13 @@ function Card(props) {
 
 export default function Cards(props) {
 
-  const { updateCardState, cardState } = props;
+  const { updateCardState, 
+          updateCardStyle, 
+          setCardCounter, 
+          cardState, 
+          cardStyle, 
+          cardCounter 
+        } = props;
 
   return (
     <Container>
@@ -142,8 +133,12 @@ export default function Cards(props) {
         <Card 
           key={index} 
           card={card}
+          style={cardStyle[index]}
+          counter={cardCounter}
           index={index}
           updateCardState={updateCardState}
+          updateCardStyle={updateCardStyle}
+          setCardCounter={setCardCounter}
         />)}
     </Container>
   );
