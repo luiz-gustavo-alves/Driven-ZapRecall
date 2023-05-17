@@ -1,3 +1,4 @@
+import Home from "./components/Home"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
 import Cards from "./components/Cards"
@@ -11,6 +12,7 @@ export default function App() {
   const [cardState, setCardState] = useState(initialCardState);
   const [cardStyle, setCardStyle] = useState(initialCardStyle);
   const [cardCounter, setCardCounter] = useState(0);
+  const [homepage, setHomepage] = useState(true);
 
   function updateCardState(newCardState, index) {
 
@@ -40,18 +42,28 @@ export default function App() {
 
   return (
     <>
-      <Header />
-      <Cards
-        updateCardState={updateCardState}
-        updateCardStyle={updateCardStyle}
-        setCardCounter={setCardCounter}
-        cardState={cardState}
-        cardStyle={cardStyle}
-        cardCounter={cardCounter}
-      />
-      <Footer
-        cardCounter={cardCounter}
-      />
+      {homepage && 
+        <Home 
+          setHomepage={setHomepage} 
+          homepage={homepage}
+        />
+      }
+      {!homepage &&
+        <>
+          <Header />
+          <Cards
+            updateCardState={updateCardState}
+            updateCardStyle={updateCardStyle}
+            setCardCounter={setCardCounter}
+            cardState={cardState}
+            cardStyle={cardStyle}
+            cardCounter={cardCounter}
+          />
+          <Footer
+            cardCounter={cardCounter}
+          />
+        </>
+      }
     </>
   );
 }

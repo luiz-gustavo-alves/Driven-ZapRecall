@@ -8,6 +8,10 @@ export const Container = styled.header`
     align-items: center;
     gap: 40px;
 
+    a {
+        text-decoration: none;
+    }
+
     img {
         width: 52px;
         height: 60px; 
