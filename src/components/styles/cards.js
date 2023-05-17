@@ -13,6 +13,7 @@ export const Container = styled.ul`
 export const Wrapper = styled.li`
 
     background-color: ${props => props.background};
+    min-height: ${props => (props.status > 0 && props.status < 3) ? "130px" : "0"};
 
     display: flex;
     flex-direction: column;
@@ -30,6 +31,7 @@ export const CardContent = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
 
     h2 {
         font-family: 'Recursive', sans-serif;
@@ -38,9 +40,16 @@ export const CardContent = styled.div`
     }
 
     button {
+        display: ${props => props.status === 2 ? "none" : ""};
         border: none;
         background: none;
-        cursor: pointer;
+        cursor: ${props => props.buttonDisabled ? "default" : "pointer"};
+    }
+
+    img {
+        position: absolute;
+        top: ${props => (props.status > 0 && props.status < 3) ? "105px" : "11px"};
+        right: 11px;
     }
 `;
 
