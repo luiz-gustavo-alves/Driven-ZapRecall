@@ -14,27 +14,27 @@ export default function App() {
 
   function updateCardState(newCardState, index) {
 
-    const newCard = cardState.map((item, i) => {
-
+    const newState = cardState.map((item, i) => {
       if (index === i) {
         return {...item, ...newCardState};
       } else {
         return item;
       }
     });
-    setCardState(newCard);
+
+    setCardState(newState);
   }
 
   function updateCardStyle(newCardStyle, index) {
 
     const newStyle = cardStyle.map((item, i) => {
-
       if (index === i) {
         return {...item, ...newCardStyle};
       } else {
         return item;
       }
     });
+
     setCardStyle(newStyle);
   }
 
@@ -48,7 +48,7 @@ export default function App() {
         cardState={cardState}
         cardStyle={cardStyle}
         cardCounter={cardCounter}
-        />
+      />
       <Footer
         cardCounter={cardCounter}
       />

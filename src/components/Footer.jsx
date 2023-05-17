@@ -5,7 +5,7 @@ export default function Footer(props) {
   const { cardCounter } = props;
 
   return (
-    <Container>
+    <Container data-test="footer">
       <h3>{cardCounter}/8 CONCLUÍDOS</h3>
     </Container>
   );

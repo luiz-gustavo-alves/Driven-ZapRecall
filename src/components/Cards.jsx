@@ -7,10 +7,10 @@ import answerIcon2 from "/assets/icone_certo.png"
 
 function Card(props) {
 
-  const { card, 
+  const { index,
+          card, 
           style, 
           counter, 
-          index, 
           updateCardState, 
           updateCardStyle, 
           setCardCounter 
@@ -24,28 +24,22 @@ function Card(props) {
       newCardStyle = {
         background: "#FFFFD4",
         icon: flipIcon,
-        hideButtons: false,
       };
     }
 
     else if (status === 2) {
       newCardStyle = {
         icon: "",
-        colors: ["#FF3030", "#FF922E", "#2FBE34"],
-        font: "12px",
-        cursor: "pointer",
+        disabled: false
       };
     }
 
     else if (status === 3) {
       newCardStyle = {
-        fontColor: style.colors[buttonIndex],
+        fontColor: style.buttonColors[buttonIndex],
         background: "#FFFFFF",
         icon: answerIcon,
-        hideButtons: true,
-        colors: ["inherit", "inherit", "inherit"],
-        font: 0,
-        cursor: "auto",
+        disabled: true,
       };
     }
 
@@ -56,13 +50,13 @@ function Card(props) {
 
     let newCardState = {};
 
-    if (card.status === 0) newCardState = {status: card.status + 1, message: card.question}
-    else if (card.status === 1) newCardState = {status: card.status + 1, message: card.answer}
+    if (card.status === 0) newCardState = {status: card.status + 1, message: card.question};
+    else if (card.status === 1) newCardState = {status: card.status + 1, message: card.answer};
     else if (card.status === 2) {
       newCardState = {status: card.status + 1, message: card.number, checked: true};
-      setCardCounter(counter + 1)
+      setCardCounter(counter + 1);
     }
-    
+
     updateCardState(newCardState, index);
     setCardStyle(newCardState.status, icon, buttonIndex);
   }
@@ -78,10 +72,25 @@ function Card(props) {
     setCardStatus(index, icon, buttonIndex);
   }
 
-  const buttonsText = ["Não lembrei", "Quase não lembrei", "Zap!"];
+  function getIconDataTest() {
+
+    if (card.status === 0) return "play-btn";
+    else if (card.status === 1) return "turn-btn";
+    else if (card.status === 3) {
+
+      if (style.icon === answerIcon0) return "no-icon";
+      else if (style.icon === answerIcon1) return "partial-icon";
+      else if (style.icon === answerIcon2) return "zap-icon";
+    }
+
+    return "";
+  }
+
+  const iconDataTest = getIconDataTest();
 
   return (
     <Wrapper
+      data-test="flashcard"
       background={style.background}
       status={card.status}
     >
@@ -90,28 +99,40 @@ function Card(props) {
         cardChecked={card.checked}
         fontColor={style.fontColor}
       >
-        <h2>{card.message}</h2>  
+        <h2 data-test="flashcard-text">{card.message}</h2>  
         <button
+          data-test={iconDataTest}
+          type="button"
           disabled={card.checked}
           onClick={() => setCardStatus(index)}
         >
-          <img src={style.icon} alt={style.icon} />
+          <img src={style.icon} alt="icon" />
         </button>
       </CardContent>
       <ButtonsContainer
-        hidden={style.hideButtons}
+        hidden={style.disabled}
       >
-        {buttonsText.map((text, index) => {
-          return (
-            <Button
-              key={index}
-              onClick={() => setCardIcon(index)}
-              hidden={style.hideButtons}
-              color={style.colors[index]}
-              font={style.font}
-              cursor={style.cursor}
-            >{text}</Button>
-          )})}
+        <Button
+          data-test="no-btn"
+          type="button"
+          onClick={() => setCardIcon(0)}
+          disabled={style.disabled}
+          color={style.buttonColors[0]}
+        >Não lembrei</Button>
+        <Button
+          data-test="partial-btn"
+          type="button"
+          onClick={() => setCardIcon(1)}
+          disabled={style.disabled}
+          color={style.buttonColors[1]}
+        >Quase não lembrei</Button>
+        <Button
+          data-test="zap-btn"
+          type="button"
+          onClick={() => setCardIcon(2)}
+          disabled={style.disabled}
+          color={style.buttonColors[2]}
+        >Zap!</Button>
       </ButtonsContainer>
     </Wrapper>
   );
@@ -130,12 +151,12 @@ export default function Cards(props) {
   return (
     <Container>
       {cardState.map((card, index) => 
-        <Card 
-          key={index} 
+        <Card
+          key={index}
+          index={index} 
           card={card}
           style={cardStyle[index]}
           counter={cardCounter}
-          index={index}
           updateCardState={updateCardState}
           updateCardStyle={updateCardStyle}
           setCardCounter={setCardCounter}

@@ -4,7 +4,9 @@ export default function Header() {
 
   return (
     <Container>
-      <img src="/assets/logo.png" alt="logo"/>
+      <a href="./" alt="logo" title="logo">
+        <img src="/assets/logo.png" alt="logo"/>
+      </a>
       <h1>ZapRecall</h1>
     </Container>
   );

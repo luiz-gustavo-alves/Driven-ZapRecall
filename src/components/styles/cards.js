@@ -45,16 +45,12 @@ export const CardContent = styled.div`
     button {
         display: ${props => props.status === 2 ? "none" : ""};
         cursor: ${props => props.cardChecked ? "default" : "pointer"};
-
-        border: none;
-        background: none;
-    }
-
-    img {
         top: ${props => (props.status > 0 && props.status < 3) ? "105px" : "11px"};
 
         position: absolute;
         right: 11px;
+        border: none;
+        background: none;
     }
 `;
 
@@ -67,12 +63,10 @@ export const ButtonsContainer = styled.div`
     align-items: center;
 `;
 
-export const Button = styled.div`
+export const Button = styled.button`
 
-    display: ${props => props.hidden ? "none" : "flex"};
-    background-color: ${props => props.hidden ? "inherit" : props.color};
-    font-size: ${props => props.font};
-    cursor: ${props => props.cursor};
+    display: ${props => props.disabled ? "none" : "flex"};
+    background-color: ${props => props.disabled ? "inherit" : props.color};
 
     padding: 10px;
     width: 86px;
@@ -81,8 +75,10 @@ export const Button = styled.div`
     border-radius: 5px;
     justify-content: center;
     align-items: center;
+    font-size: 12px;
     font-family: 'Recursive', sans-serif;
     font-weight: 400;
     text-align: center;
     color: #FFF;
+    cursor: pointer;
 `;
