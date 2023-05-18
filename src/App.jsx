@@ -5,13 +5,11 @@ import Cards from "./components/Cards"
 
 import { useState } from "react"
 import initialCardState from "./exports/initialCardState"
-import initialCardStyle from "./exports/initialCardStyle"
 
 export default function App() {
 
   const [cardState, setCardState] = useState(initialCardState);
-  const [cardStyle, setCardStyle] = useState(initialCardStyle);
-  const [cardCounter, setCardCounter] = useState(0);
+  const [progress, setProgress] = useState({counter: 0, answersIcon: []})
   const [homepage, setHomepage] = useState(true);
 
   function updateCardState(newCardState, index) {
@@ -27,24 +25,19 @@ export default function App() {
     setCardState(newState);
   }
 
-  function updateCardStyle(newCardStyle, index) {
+  function updateProgress(newProgress) {
 
-    const newStyle = cardStyle.map((item, i) => {
-      if (index === i) {
-        return {...item, ...newCardStyle};
-      } else {
-        return item;
-      }
-    });
-
-    setCardStyle(newStyle);
+    setProgress(previousProgess => ({
+      ...previousProgess,
+      ...newProgress
+    }));
   }
 
   return (
     <>
-      {homepage && 
-        <Home 
-          setHomepage={setHomepage} 
+      {homepage &&
+        <Home
+          setHomepage={setHomepage}
           homepage={homepage}
         />
       }
@@ -53,14 +46,12 @@ export default function App() {
           <Header />
           <Cards
             updateCardState={updateCardState}
-            updateCardStyle={updateCardStyle}
-            setCardCounter={setCardCounter}
+            updateProgress={updateProgress}
             cardState={cardState}
-            cardStyle={cardStyle}
-            cardCounter={cardCounter}
+            progress={progress}
           />
           <Footer
-            cardCounter={cardCounter}
+            progress={progress}
           />
         </>
       }

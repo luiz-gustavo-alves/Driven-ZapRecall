@@ -2,7 +2,9 @@ import styled from "styled-components"
 
 export const Container = styled.ul`
 
-    margin: 60px 0 100px 0;
+    margin-bottom: ${props => props.progressCounter === 8 ? "200px" : "115px"};
+
+    margin-top: 60px;
     display: flex;
     flex-direction: column;
     justify-content: center;
